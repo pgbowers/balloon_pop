@@ -3,6 +3,7 @@
 // mostly borrowed from the demos and modified .
 
 import "mathUtil"
+import "myTextUtils"
 
 clear
 gfx.clear "#004400" // green background
@@ -83,28 +84,9 @@ end function
 score = {}
 score.value = 0
 
-// text helper functions for the score
-eraseText = function(row, column, length)
-	text.row = row
-	text.column = column
-	print " " * length, ""
-end function
-
-printTextAtPosition = function(txt, row, column, txtColor)
-	// save the current color and set the one passed as a parameter
-	previousColor = text.color
-	text.color = txtColor
-	// move to postiton and print the text
-	text.row = row
-	text.column = column
-	print txt
-	// restore the previous color
-	text.color = previousColor	
-end function
-
 score.print = function
 	eraseText 25, 2, "SCORE: 999999".len
-	printTextAtPosition "SCORE: "+ self.value, 25, 2, color.white	
+	printTextAtPosition "SCORE: "+ self.value, 25, 2, color.yellow	
 end function
 score.print // print the empty score to start
 
