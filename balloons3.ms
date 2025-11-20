@@ -5,6 +5,10 @@
 import "mathUtil"
 import "myTextUtils"
 
+// @ will reference the function from myTextUtils without invoking it.
+eraseText = @myTextUtils.eraseText
+printTextAtPosition = @myTextUtils.printTextAtPosition
+
 clear
 gfx.clear "#004400" // green background
 
@@ -12,7 +16,7 @@ display(4).mode = displayMode.sprite
 disp = display(4)
 disp.clear
 
-pop = file.loadSound("/sys/sounds/pop.wav")
+popping = file.loadSound("/sys/sounds/pop.wav")
 burstImg = file.loadImage("/sys/pics/Burst.png")
 
 //==================================================
@@ -54,7 +58,7 @@ Balloon.init = function
 	disp.sprites.push self
 end function
 
-// remove from the list and the display
+// remove a balloon from the list and the display
 Balloon.remove = function
 	disp.sprites.remove disp.sprites.indexOf(self)
 	balloons.remove balloons.indexOf(self)
@@ -72,7 +76,7 @@ Balloon.update = function(dt=0.1)
 end function
 
 Balloon.pop = function
-	pop.play
+	popping.play
 	self.image = burstImg
 	// minus value will use the balloon colour
 	self.tint = color.lerp(self.tint, color.white, -0.7)
