@@ -7,3 +7,14 @@ Show the score on the over screen.
 
 Keep the highest score in a local file and display that on the over screen as well.
 
+Finish the menu screen with instructions and a background
+
+Finish the over screen with a background
+
+Get gamepad working
+
+Replace the cursor with a graphic of some kind
+
+
+
+
