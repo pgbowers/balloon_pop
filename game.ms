@@ -2,15 +2,13 @@
 // pop balloons all day long, press Esc to quit.
 // mostly borrowed from the demos and modified .
 
-import "mathUtil"
 import "myTextUtils"
+import "mathUtil"
+//drawGame = function
 
-// @ will reference the function from myTextUtils without invoking it.
-eraseText = @myTextUtils.eraseText
-printTextAtPosition = @myTextUtils.printTextAtPosition
-
-clear
-gfx.clear "#004400" // green background
+clear    
+//gfx.clear //"#004400" // green background
+gfx.drawImage file.loadImage("background1.png")
 
 display(4).mode = displayMode.sprite
 disp = display(4)
@@ -89,10 +87,30 @@ score = {}
 score.value = 0
 
 score.print = function
-	eraseText 25, 2, "SCORE: 999999".len
-	printTextAtPosition "SCORE: "+ self.value, 25, 2, color.yellow	
+	myTextUtils.eraseText 25, 2, "SCORE: 999999".len
+	myTextUtils.printTextAtPosition "SCORE: "+ self.value, 25, 2, color.yellow	
 end function
 score.print // print the empty score to start
+
+// game timer
+endTime = time + 10
+updateTime = function()
+	timeLeft = ceil(endTime - time)
+	text.row = 25
+	text.column = 58
+	if timeLeft<= 0 then
+		text.color = color.red
+		print "TIME'S UP!"
+		text.color = color.silver
+		//gameOver
+        reset
+        run "over"
+else
+	mins = floor(timeLeft/60)
+	secs = ("00" + (timeLeft % 60))[-2:]
+	print "TIME: " + mins + ":" + secs
+end if	
+end function
 
 //==================================================
 // Main program
@@ -113,7 +131,10 @@ end function
 balloons = [] // a list to hold many balloons
 hadMouseDown = mouse.button
 lastTime = time
-while not key.pressed("escape")
+
+// ***************************** Game Loop **********************************
+while not key.pressed("q")  
+	
 	dt = time - lastTime
 	lastTime = time
 	
@@ -130,13 +151,19 @@ while not key.pressed("escape")
 		handleClick mouse		
 	end if
 	
+	//if score.value == 5 then break
+	
 	hadMouseDown = mouseDown
 	
 	// update the balloons	
 	for b in balloons
 		b.update dt
-	end for
+	end for	
 	
-	yield  // (wait till next frame)
+	updateTime
+	
+	yield  // (wait till next frame)  
+	
 end while
-key.clear
+
+//reset; run "over"

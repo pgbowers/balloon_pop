@@ -1,0 +1,9 @@
+Dec 19, 2025
+
+Put a timer in the game that limits play to 60 seconds. - DONE Dec 21
+Display the timer in the top right corner. DONE Dec 21
+
+Show the score on the over screen.
+
+Keep the highest score in a local file and display that on the over screen as well.
+
