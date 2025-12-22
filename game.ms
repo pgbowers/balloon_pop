@@ -8,7 +8,7 @@ import "mathUtil"
 
 clear    
 //gfx.clear //"#004400" // green background
-gfx.drawImage file.loadImage("background1.png")
+gfx.drawImage file.loadImage("assets/background1.png")
 
 display(4).mode = displayMode.sprite
 disp = display(4)
@@ -22,6 +22,7 @@ burstImg = file.loadImage("/sys/pics/Burst.png")
 //==================================================
 Balloon = new Sprite
 Balloon.image = file.loadImage("/sys/pics/Balloon.png")
+//Balloon.image = file.loadImage("assets/3.png")
 Balloon.burstTime = null
 Balloon.init = function	
 	self.x = floor(rnd * 928) //random left to right
@@ -49,7 +50,7 @@ Balloon.init = function
 		self.speed = 1
 		self.scale = 2		
 	else
-		self.tint = color.red
+		self.tint =  "#FF0000C0"//color.red
 		self.scale = 0.9
 		self.speed = 0.9
 	end if
@@ -93,7 +94,7 @@ end function
 score.print // print the empty score to start
 
 // game timer
-endTime = time + 10
+endTime = time + 30
 updateTime = function()
 	timeLeft = ceil(endTime - time)
 	text.row = 25
@@ -103,13 +104,13 @@ updateTime = function()
 		print "TIME'S UP!"
 		text.color = color.silver
 		//gameOver
-        reset
-        run "over"
-else
-	mins = floor(timeLeft/60)
-	secs = ("00" + (timeLeft % 60))[-2:]
-	print "TIME: " + mins + ":" + secs
-end if	
+		reset
+		run "over"
+	else
+		mins = floor(timeLeft/60)
+		secs = ("00" + (timeLeft % 60))[-2:]
+		print "TIME: " + mins + ":" + secs
+	end if	
 end function
 
 //==================================================
