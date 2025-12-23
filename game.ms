@@ -152,8 +152,6 @@ while not key.pressed("q")
 		handleClick mouse		
 	end if
 	
-	//if score.value == 5 then break
-	
 	hadMouseDown = mouseDown
 	
 	// update the balloons	
