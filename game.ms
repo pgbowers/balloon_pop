@@ -84,6 +84,9 @@ end function
 // A sprite for the crosshairs
 sight = new Sprite
 sight.image = file.loadImage("assets/crosshair.png")
+sight.localBounds = new Bounds
+sight.localBounds.width = sight.image.width
+sight.localBounds.height = sight.image.height
 display(4).sprites.push sight
 sight.x = 480 // start in the center
 sight.y = 320
@@ -153,8 +156,8 @@ balloons = [] // a list to hold many balloons
 hadMouseDown = mouse.button
 lastTime = time
 
-// ***************************** Game Loop **********************************
-while not key.pressed("q")  
+// ********************* Game Loop ***********************
+while not key.pressed("escape")  
 	
 	dt = time - lastTime
 	lastTime = time
@@ -166,7 +169,7 @@ while not key.pressed("q")
 		balloons.push b
 	end if
 	
-	// move by gamepad or keys
+	// move the crosshairs by gamepad or keys
 	sight.update
 	
 	// handle mouse clicks
@@ -188,4 +191,4 @@ while not key.pressed("q")
 	
 end while
 
-//reset; run "over"
+clear
