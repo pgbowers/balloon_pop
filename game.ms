@@ -4,10 +4,8 @@
 
 import "myTextUtils"
 import "mathUtil"
-//drawGame = function
 
-clear    
-//gfx.clear //"#004400" // green background
+clear   
 gfx.drawImage file.loadImage("assets/background1.png")
 
 display(4).mode = displayMode.sprite
@@ -83,6 +81,28 @@ Balloon.pop = function
 	self.burstTime = time	
 end function
 
+// A sprite for the crosshairs
+sight = new Sprite
+sight.image = file.loadImage("assets/crosshair.png")
+display(4).sprites.push sight
+sight.x = 480 // start in the center
+sight.y = 320
+sight.speed = 10 // pixels to move per frame
+
+sight.update = function()
+	// key.axis also works for the keyboard arrows and WASD
+	dx = key.axis("Horizontal")
+	dy = key.axis("Vertical")
+	dlen = sqrt(dx*dx + dy*dy) // normalize diagonal movement
+	if dlen > 1 then
+		dx = dx / dlen
+		dy = dy / dlen
+	end if
+	// move the sprite
+	sight.x += dx * sight.speed
+	sight.y += dy * sight.speed
+end function
+
 // score
 score = {}
 score.value = 0
@@ -145,6 +165,9 @@ while not key.pressed("q")
 		b.init
 		balloons.push b
 	end if
+	
+	// move by gamepad or keys
+	sight.update
 	
 	// handle mouse clicks
 	mouseDown = mouse.button
