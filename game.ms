@@ -21,6 +21,9 @@ burstImg = file.loadImage("/sys/pics/Burst.png")
 Balloon = new Sprite
 Balloon.image = file.loadImage("/sys/pics/Balloon.png")
 //Balloon.image = file.loadImage("assets/3.png")
+Balloon.localBounds = new Bounds
+Balloon.localBounds.width = Balloon.image.width
+Balloon.localBounds.height = Balloon.image.height
 Balloon.burstTime = null
 Balloon.init = function	
 	self.x = floor(rnd * 928) //random left to right
@@ -82,17 +85,17 @@ Balloon.pop = function
 end function
 
 // A sprite for the crosshairs
-sight = new Sprite
-sight.image = file.loadImage("assets/crosshair.png")
-sight.localBounds = new Bounds
-sight.localBounds.width = sight.image.width
-sight.localBounds.height = sight.image.height
-display(4).sprites.push sight
-sight.x = 480 // start in the center
-sight.y = 320
-sight.speed = 10 // pixels to move per frame
+Sight = new Sprite
+Sight.image = file.loadImage("assets/crosshair.png")
+Sight.localBounds = new Bounds
+Sight.localBounds.width = Sight.image.width
+Sight.localBounds.height = Sight.image.height
+display(4).sprites.push Sight
+Sight.x = 480 // start in the center
+Sight.y = 320
+Sight.speed = 10 // pixels to move per frame
 
-sight.update = function()
+Sight.update = function()
 	// key.axis also works for the keyboard arrows and WASD
 	dx = key.axis("Horizontal")
 	dy = key.axis("Vertical")
@@ -102,8 +105,8 @@ sight.update = function()
 		dy = dy / dlen
 	end if
 	// move the sprite
-	sight.x += dx * sight.speed
-	sight.y += dy * sight.speed
+	Sight.x += dx * Sight.speed
+	Sight.y += dy * Sight.speed
 end function
 
 // score
@@ -136,10 +139,7 @@ updateTime = function()
 	end if	
 end function
 
-//==================================================
-// Main program
-//==================================================
-
+// collision detection using the mouse
 handleClick = function(pos)
 	// check for a click on a balloon
 	for b in balloons
@@ -150,6 +150,19 @@ handleClick = function(pos)
 			return			
 		end if
 	end for	
+end function
+
+checkOverlap = function
+	//text.clear
+	for b in balloons
+		if Sight.overlaps(b) then
+			b.pop
+			b.remove
+			score.value += 1	
+			score.print	
+			
+		end if
+	end for
 end function
 
 balloons = [] // a list to hold many balloons
@@ -170,7 +183,7 @@ while not key.pressed("escape")
 	end if
 	
 	// move the crosshairs by gamepad or keys
-	sight.update
+	Sight.update
 	
 	// handle mouse clicks
 	mouseDown = mouse.button
@@ -179,6 +192,8 @@ while not key.pressed("escape")
 	end if
 	
 	hadMouseDown = mouseDown
+	
+	checkOverlap
 	
 	// update the balloons	
 	for b in balloons
