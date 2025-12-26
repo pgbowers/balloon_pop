@@ -12,6 +12,8 @@ display(4).mode = displayMode.sprite
 disp = display(4)
 disp.clear
 
+mouse.visible = false // Hide the mouse cursor
+
 popping = file.loadSound("/sys/sounds/pop.wav")
 burstImg = file.loadImage("/sys/pics/Burst.png")
 
@@ -96,9 +98,9 @@ Sight.y = 320
 Sight.speed = 10 // pixels to move per frame
 
 Sight.update = function()
-	// key.axis also works for the keyboard arrows and WASD
-	dx = key.axis("Horizontal")
-	dy = key.axis("Vertical")
+	// key.axis works for the gamepad, keyboard arrows and WASD.
+	dx = key.axis("Horizontal") //or mouse.x
+	dy = key.axis("Vertical") //or mouse.y
 	dlen = sqrt(dx*dx + dy*dy) // normalize diagonal movement
 	if dlen > 1 then
 		dx = dx / dlen
@@ -106,7 +108,8 @@ Sight.update = function()
 	end if
 	// move the sprite
 	Sight.x += dx * Sight.speed
-	Sight.y += dy * Sight.speed
+	Sight.y += dy * Sight.speed	
+	
 end function
 
 // score
@@ -152,15 +155,13 @@ handleClick = function(pos)
 	end for	
 end function
 
-checkOverlap = function
-	//text.clear
+checkOverlap = function	
 	for b in balloons
 		if Sight.overlaps(b) then
 			b.pop
 			b.remove
 			score.value += 1	
-			score.print	
-			
+			score.print				
 		end if
 	end for
 end function
@@ -185,15 +186,19 @@ while not key.pressed("escape")
 	// move the crosshairs by gamepad or keys
 	Sight.update
 	
+	// move the crosshairs with the mouse
+	//mathUtil.moveTowardsXY Sight, mouse, 20
+	
 	// handle mouse clicks
 	mouseDown = mouse.button
 	if mouseDown and not hadMouseDown then 		
 		handleClick mouse		
+		//Sight.update
 	end if
 	
 	hadMouseDown = mouseDown
 	
-	checkOverlap
+	//checkOverlap
 	
 	// update the balloons	
 	for b in balloons
