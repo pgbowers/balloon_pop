@@ -17,6 +17,32 @@ mouse.visible = false // Hide the mouse cursor
 popping = file.loadSound("/sys/sounds/pop.wav")
 burstImg = file.loadImage("/sys/pics/Burst.png")
 
+// A sprite for the crosshairs
+Sight = new Sprite
+Sight.image = file.loadImage("assets/crosshair.png")
+Sight.localBounds = new Bounds
+Sight.localBounds.width = Sight.image.width
+Sight.localBounds.height = Sight.image.height
+disp.sprites.push Sight
+Sight.x = 480 // start in the center
+Sight.y = 320
+Sight.speed = 10 // pixels to move per frame
+
+
+Sight.update = function()
+	// key.axis works for the gamepad, keyboard arrows and WASD.
+	dx = key.axis("Horizontal") //or mouse.x
+	dy = key.axis("Vertical") //or mouse.y
+	dlen = sqrt(dx*dx + dy*dy) // normalize diagonal movement
+	if dlen > 1 then
+		dx = dx / dlen
+		dy = dy / dlen
+	end if
+	// move the sprite
+	Sight.x += dx * Sight.speed
+	Sight.y += dy * Sight.speed	
+end function
+
 //==================================================
 // Balloon class
 //==================================================
@@ -86,32 +112,6 @@ Balloon.pop = function
 	self.burstTime = time	
 end function
 
-// A sprite for the crosshairs
-Sight = new Sprite
-Sight.image = file.loadImage("assets/crosshair.png")
-Sight.localBounds = new Bounds
-Sight.localBounds.width = Sight.image.width
-Sight.localBounds.height = Sight.image.height
-display(4).sprites.push Sight
-Sight.x = 480 // start in the center
-Sight.y = 320
-Sight.speed = 10 // pixels to move per frame
-
-Sight.update = function()
-	// key.axis works for the gamepad, keyboard arrows and WASD.
-	dx = key.axis("Horizontal") //or mouse.x
-	dy = key.axis("Vertical") //or mouse.y
-	dlen = sqrt(dx*dx + dy*dy) // normalize diagonal movement
-	if dlen > 1 then
-		dx = dx / dlen
-		dy = dy / dlen
-	end if
-	// move the sprite
-	Sight.x += dx * Sight.speed
-	Sight.y += dy * Sight.speed	
-	
-end function
-
 // score
 score = {}
 score.value = 0
@@ -157,7 +157,7 @@ end function
 
 checkOverlap = function	
 	for b in balloons
-		if Sight.overlaps(b) then
+		if Sight.overlaps(b) and key.pressed("joystick button 1") then
 			b.pop
 			b.remove
 			score.value += 1	
@@ -198,7 +198,7 @@ while not key.pressed("escape")
 	
 	hadMouseDown = mouseDown
 	
-	//checkOverlap
+	checkOverlap
 	
 	// update the balloons	
 	for b in balloons
