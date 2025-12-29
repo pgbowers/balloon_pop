@@ -23,11 +23,12 @@ Sight.image = file.loadImage("assets/crosshair.png")
 Sight.localBounds = new Bounds
 Sight.localBounds.width = Sight.image.width
 Sight.localBounds.height = Sight.image.height
-disp.sprites.push Sight
+
 Sight.x = 480 // start in the center
 Sight.y = 320
 Sight.speed = 10 // pixels to move per frame
-
+Sight.tint = color.green
+disp.sprites.push Sight
 
 Sight.update = function()
 	// key.axis works for the gamepad, keyboard arrows and WASD.
@@ -123,7 +124,7 @@ end function
 score.print // print the empty score to start
 
 // game timer
-endTime = time + 30
+endTime = time + 10
 updateTime = function()
 	timeLeft = ceil(endTime - time)
 	text.row = 25
@@ -159,6 +160,7 @@ checkOverlap = function
 	for b in balloons
 		if Sight.overlaps(b) and key.pressed("joystick button 1") then
 			b.pop
+			wait 0.1 // See the burst image
 			b.remove
 			score.value += 1	
 			score.print				
@@ -174,17 +176,14 @@ lastTime = time
 while not key.pressed("escape")  
 	
 	dt = time - lastTime
-	lastTime = time
+	lastTime = time	
 	
 	// make a new balloon now and then
 	if rnd < 0.02 then
 		b = new Balloon
 		b.init
 		balloons.push b
-	end if
-	
-	// move the crosshairs by gamepad or keys
-	Sight.update
+	end if	
 	
 	// move the crosshairs with the mouse
 	//mathUtil.moveTowardsXY Sight, mouse, 20
@@ -204,6 +203,9 @@ while not key.pressed("escape")
 	for b in balloons
 		b.update dt
 	end for	
+	
+	// move the crosshairs by gamepad or keys
+	Sight.update	
 	
 	updateTime
 	
