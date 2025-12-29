@@ -11,13 +11,16 @@ printMsg = function(s)
 	text.column = 34 - s.len/2
 	print s
 end function
-	
-//gfx.print "Game Over!", 250, 200	
-printMsg "Play Again? (Y/N)"	
+
+gfx.print "Game Over!", 250, 300	
+gfx.print "Play Again? (Y/N)", 250, 200
+//text.row = 10
+gfx.print "Your score was: " + score.value, 250, 250
 
 while true
 	if key.pressed("y") then
-		reset; run "game"
+		//reset; run "game"
+		run "game"
 	else if key.pressed("n") then
 		clear
 		print "Thanks!"	

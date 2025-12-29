@@ -19,7 +19,7 @@ burstImg = file.loadImage("/sys/pics/Burst.png")
 
 // A sprite for the crosshairs
 Sight = new Sprite
-Sight.image = file.loadImage("assets/crosshair.png")
+Sight.image = file.loadImage("assets/crosshair_white.png")
 Sight.localBounds = new Bounds
 Sight.localBounds.width = Sight.image.width
 Sight.localBounds.height = Sight.image.height
@@ -27,7 +27,7 @@ Sight.localBounds.height = Sight.image.height
 Sight.x = 480 // start in the center
 Sight.y = 320
 Sight.speed = 10 // pixels to move per frame
-Sight.tint = color.green
+Sight.tint = color.white
 disp.sprites.push Sight
 
 Sight.update = function()
@@ -124,7 +124,7 @@ end function
 score.print // print the empty score to start
 
 // game timer
-endTime = time + 10
+endTime = time + 15
 updateTime = function()
 	timeLeft = ceil(endTime - time)
 	text.row = 25
@@ -134,7 +134,7 @@ updateTime = function()
 		print "TIME'S UP!"
 		text.color = color.silver
 		//gameOver
-		reset
+		//reset
 		run "over"
 	else
 		mins = floor(timeLeft/60)
@@ -158,7 +158,11 @@ end function
 
 checkOverlap = function	
 	for b in balloons
+		if Sight.overlaps(b) then
+			Sight.tint = b.tint
+		end if
 		if Sight.overlaps(b) and key.pressed("joystick button 1") then
+			//Sight.tint = b.tint
 			b.pop
 			wait 0.1 // See the burst image
 			b.remove
@@ -173,6 +177,7 @@ hadMouseDown = mouse.button
 lastTime = time
 
 // ********************* Game Loop ***********************
+
 while not key.pressed("escape")  
 	
 	dt = time - lastTime
