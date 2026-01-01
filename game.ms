@@ -135,7 +135,8 @@ updateTime = function()
 		text.color = color.silver
 		//gameOver
 		//reset
-		run "over"
+		//run "over"
+		load "over"; run
 	else
 		mins = floor(timeLeft/60)
 		secs = ("00" + (timeLeft % 60))[-2:]
