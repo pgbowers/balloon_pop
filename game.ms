@@ -19,7 +19,7 @@ burstImg = file.loadImage("/sys/pics/Burst.png")
 
 // A sprite for the crosshairs
 Sight = new Sprite
-Sight.image = file.loadImage("assets/crosshair_white.png")
+Sight.image = file.loadImage("assets/crosshair_blue.png")
 Sight.localBounds = new Bounds
 Sight.localBounds.width = Sight.image.width
 Sight.localBounds.height = Sight.image.height
@@ -162,10 +162,10 @@ checkOverlap = function
 		if Sight.overlaps(b) then
 			Sight.tint = b.tint
 		end if
-		if Sight.overlaps(b) and key.pressed("joystick button 1") then
+		if Sight.overlaps(b) and key.pressed("joystick button 5") then
 			//Sight.tint = b.tint
 			b.pop
-			wait 0.1 // See the burst image
+			wait 0.02 // See the burst image
 			b.remove
 			score.value += 1	
 			score.print				

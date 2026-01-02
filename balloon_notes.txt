@@ -1,19 +1,21 @@
 Dec 19, 2025
 
 Put a timer in the game that limits play to 60 seconds. - DONE Dec 21
-Display the timer in the top right corner. DONE Dec 21
+Display the timer in the top right corner. - DONE Dec 21
 
-Show the score on the over screen.
+Show the score on the over screen. - DONE
 
 Keep the highest score in a local file and display that on the over screen as well.
 
 Finish the menu screen with instructions and a background
 
-Finish the over screen with a background
+Finish the over screen with a background - DONE
 
-Get gamepad working
+Get gamepad working - DONE
 
-Replace the cursor with a graphic of some kind
+Replace the cursor with a graphic of some kind - DONE
+
+Keep the crosshairs on the screen
 
 
 
