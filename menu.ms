@@ -1,21 +1,32 @@
 // Dec 9, 2025, A menu module to import into any game
 
-import "background"
+import "bmfFonts"
 
 clear
-background.drawBackground	
+gfx.drawImage file.loadImage("assets/over_background.png")
 
-printMsg = function(s)
-	text.row = 3
-	text.color = "#EFAA2E"
-	text.column = 34 - s.len/2
-	print s
-end function
+f = bmfFonts.Font.load("/sys/fonts/minimicro-pro-20.bmf")
 
-//printMsg "This is the Menu"
-printMsg "Press S to start the game"	
+line1 = "BALLOONS A-POPPING!"
+line2 = "Press Start or S to play"
 
-while not key.pressed("s")
+lgScale = 2.0
+smScale = 1.5
+
+width1 = f.width(line1, lgScale)
+width2 = f.width(line2, smScale)
+
+f.print line1, (480-width1/2), 400, lgScale, "#0000FFFF"
+f.print line2, (480-width2/2), 200, smScale, "#8F05FFFF"
+
+while true                   
+	if key.pressed("s") or key.pressed("joystick button 7") then
+		load "game"; run
+	else if key.pressed("escape") then
+		clear
+		print "Thanks for playing!"	
+		break
+	end if
 	yield
 end while
 

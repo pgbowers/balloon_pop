@@ -17,6 +17,10 @@ Replace the cursor with a graphic of some kind - DONE
 
 Keep the crosshairs on the screen
 
+Detect joystick and use if connected, otherwise use the mouse
+
+
+
 
 
 
