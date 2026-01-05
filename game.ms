@@ -130,12 +130,10 @@ updateTime = function()
 	text.row = 25
 	text.column = 58
 	if timeLeft<= 0 then
-		text.color = color.red
-		print "TIME'S UP!"
-		text.color = color.silver
-		//gameOver
-		//reset
-		//run "over"
+		// text.color = color.red
+		// print "TIME'S UP!"
+		// text.color = color.silver
+		
 		load "over"; run
 	else
 		mins = floor(timeLeft/60)
@@ -146,7 +144,7 @@ end function
 
 // collision detection using the mouse
 handleClick = function(pos)
-	// check for a click on a balloon
+	// check for a mouse click on a balloon
 	for b in balloons
 		if mathUtil.distance(b, pos) < 32 then
 			b.pop				
