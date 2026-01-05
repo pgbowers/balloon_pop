@@ -32,8 +32,8 @@ disp.sprites.push Sight
 
 Sight.update = function()
 	// key.axis works for the gamepad, keyboard arrows and WASD.
-	dx = key.axis("Horizontal") //or mouse.x
-	dy = key.axis("Vertical") //or mouse.y
+	dx = key.axis("Horizontal") //or "Mouse X"
+	dy = key.axis("Vertical") //or "Mouse Y"
 	dlen = sqrt(dx*dx + dy*dy) // normalize diagonal movement
 	if dlen > 1 then
 		dx = dx / dlen
@@ -42,6 +42,17 @@ Sight.update = function()
 	// move the sprite
 	Sight.x += dx * Sight.speed
 	Sight.y += dy * Sight.speed	
+	
+	// stay on the screen in all directions
+	if Sight.x > 940 then //right
+		Sight.x = 940; dx = 0
+	else if Sight.x < 20 then //left
+		Sight.x = 20; dx = 0
+	else if Sight.y < 20 then //up
+		Sight.y = 20; dy=0
+	else if Sight.y > 620 then //down
+		Sight.y = 620; dy = 0
+	end if
 end function
 
 //==================================================

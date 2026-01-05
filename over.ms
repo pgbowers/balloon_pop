@@ -7,7 +7,6 @@ clear
 gfx.drawImage file.loadImage("assets/over_background.png")
 
 f = bmfFonts.Font.load("/sys/fonts/minimicro-pro-20.bmf")
-//f = bmfFonts.Font.load("/sys/fonts/Arial14Bold.bmf")
 
 line1 = "Game Over!"
 line2 = "Play Again? (Y/N)"
