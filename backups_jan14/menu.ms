@@ -27,15 +27,9 @@ f.print line2, (480-width2/2), 200, smScale, "#8F05FFFF"
 f.print line3, (480-width3/2), 150, smScale, "#8F05FFFF"
 
 while true                   
-	if key.pressed("m") then // use the mouse
-		mouseSelected = true
-		load "game"; run		
-	else if key.pressed("g") then // use the keyboard or gamepad
-		gamepadSelected = true	
-		load "game"; run	
-	end if
-	
-	if key.pressed("escape") then
+	if key.pressed("s") or key.pressed("joystick button 7") then
+		load "game"; run
+	else if key.pressed("escape") then
 		clear
 		print "Thanks for playing!"	
 		break
@@ -50,5 +44,6 @@ for a in range(5, 255, 25)
 	d.color = color.rgba(0, 0, 0, a)
 	yield
 end for
-//reset
+
+reset
 run "game"

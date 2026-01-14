@@ -12,8 +12,6 @@ display(4).mode = displayMode.sprite
 disp = display(4)
 disp.clear
 
-mouseSelected = false
-gamepadSelected = true
 mouse.visible = false // Hide the mouse cursor
 
 popping = file.loadSound("/sys/sounds/pop.wav")
@@ -120,7 +118,7 @@ end function
 Balloon.pop = function
 	popping.play // popping sound
 	self.image = burstImg
-	// minus value in lerp will use the balloon colour
+	// minus value will use the balloon colour
 	self.tint = color.lerp(self.tint, color.white, -0.7)
 	self.rotation = 360*rnd // add variety to the bursts
 	self.burstTime = time	
@@ -173,7 +171,8 @@ checkOverlap = function
 		if Sight.overlaps(b) then
 			Sight.tint = b.tint
 		end if
-		if Sight.overlaps(b) and key.pressed("space") or key.pressed("joystick button 5") then			
+		if Sight.overlaps(b) and key.pressed("joystick button 5") then
+			//Sight.tint = b.tint
 			b.pop
 			wait 0.02 // See the burst image
 			b.remove
@@ -202,28 +201,26 @@ while not key.pressed("escape")
 	end if	
 	
 	// move the crosshairs with the mouse
-	if mouseSelected then
-		mathUtil.moveTowardsXY Sight, mouse, 20		
-	end if
-	
+	//mathUtil.moveTowardsXY Sight, mouse, 20
 	
 	// handle mouse clicks
 	mouseDown = mouse.button
 	if mouseDown and not hadMouseDown then 		
-		handleClick mouse			
+		handleClick mouse		
+		//Sight.update
 	end if
 	
 	hadMouseDown = mouseDown
 	
-	if gamepadSelected then
-		Sight.update
-		checkOverlap
-	end if	
+	checkOverlap
 	
 	// update the balloons	
 	for b in balloons
 		b.update dt
-	end for		
+	end for	
+	
+	// move the crosshairs by gamepad or keys
+	Sight.update	
 	
 	updateTime
 	
