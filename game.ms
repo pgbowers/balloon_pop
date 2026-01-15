@@ -12,8 +12,6 @@ display(4).mode = displayMode.sprite
 disp = display(4)
 disp.clear
 
-mouseSelected = false
-gamepadSelected = true
 mouse.visible = false // Hide the mouse cursor
 
 popping = file.loadSound("/sys/sounds/pop.wav")
@@ -21,7 +19,7 @@ burstImg = file.loadImage("/sys/pics/Burst.png")
 
 // A sprite for the crosshairs
 Sight = new Sprite
-Sight.image = file.loadImage("assets/crosshair_blue.png")
+Sight.image = file.loadImage("assets/crosshair_white.png")
 Sight.localBounds = new Bounds
 Sight.localBounds.width = Sight.image.width
 Sight.localBounds.height = Sight.image.height
@@ -29,7 +27,7 @@ Sight.localBounds.height = Sight.image.height
 Sight.x = 480 // start in the center
 Sight.y = 320
 Sight.speed = 10 // pixels to move per frame
-Sight.tint = color.white
+//Sight.tint = color.white
 disp.sprites.push Sight
 
 Sight.update = function()
@@ -155,30 +153,26 @@ updateTime = function()
 	end if	
 end function
 
-// collision detection using the mouse
-handleClick = function(pos)
-	// check for a mouse click on a balloon
-	for b in balloons
-		if mathUtil.distance(b, pos) < 32 then
-			b.pop				
-			score.value += 1	
-			score.print		
-			return			
-		end if
-	end for	
+showHit = function
+	b.pop
+	wait 0.02 // See the burst image
+	b.remove
+	score.value += 1	
+	score.print	
 end function
 
+// is the sight touching a balloon
 checkOverlap = function	
 	for b in balloons
-		if Sight.overlaps(b) then
-			Sight.tint = b.tint
-		end if
-		if Sight.overlaps(b) and key.pressed("space") or key.pressed("joystick button 5") then			
-			b.pop
-			wait 0.02 // See the burst image
-			b.remove
-			score.value += 1	
-			score.print				
+		//use a joystick		
+		if Sight.overlaps(b) and key.pressed("joystick button 5") then
+			showHit
+			// use the keyboard
+		else if Sight.overlaps(b) and key.pressed("space") then
+			showHit
+			// use a mouse
+		else if Sight.overlaps(b) and mouse.button then
+			showHit
 		end if
 	end for
 end function
@@ -204,13 +198,12 @@ while not key.pressed("escape")
 	// move the crosshairs with the mouse
 	if mouseSelected then
 		mathUtil.moveTowardsXY Sight, mouse, 20		
-	end if
-	
+	end if	
 	
 	// handle mouse clicks
 	mouseDown = mouse.button
 	if mouseDown and not hadMouseDown then 		
-		handleClick mouse			
+		checkOverlap		
 	end if
 	
 	hadMouseDown = mouseDown

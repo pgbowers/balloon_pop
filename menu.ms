@@ -26,15 +26,26 @@ f.print line1, (480-width1/2), 400, lgScale, "#0000FFFF"
 f.print line2, (480-width2/2), 200, smScale, "#8F05FFFF"
 f.print line3, (480-width3/2), 150, smScale, "#8F05FFFF"
 
+transition = function
+	// Fade out
+	display(0).mode = displayMode.solidColor
+	d = display(0)
+	for a in range(5, 255, 25)
+		d.color = color.rgba(0, 0, 0, a)
+		yield
+	end for
+	// run the game module
+	run "game"
+end function
+
 while true                   
 	if key.pressed("m") then // use the mouse
-		mouseSelected = true
-		load "game"; run		
+		mouseSelected = true		
+		transition	
 	else if key.pressed("g") then // use the keyboard or gamepad
-		gamepadSelected = true	
-		load "game"; run	
-	end if
-	
+		gamepadSelected = true			
+		transition
+	end if	
 	if key.pressed("escape") then
 		clear
 		print "Thanks for playing!"	
@@ -43,12 +54,4 @@ while true
 	yield
 end while
 
-// Fade out
-display(0).mode = displayMode.solidColor
-d = display(0)
-for a in range(5, 255, 25)
-	d.color = color.rgba(0, 0, 0, a)
-	yield
-end for
-//reset
-run "game"
+
