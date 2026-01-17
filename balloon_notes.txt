@@ -17,7 +17,7 @@ Replace the cursor with a graphic of some kind - DONE
 
 Keep the crosshairs on the screen - DONE, Jan 5
 
-Detect joystick and use if connected, otherwise use the mouse
+Detect joystick and use if connected, otherwise use the mouse(select from start menu) - DONE
 
 Allow user to set time to play
 

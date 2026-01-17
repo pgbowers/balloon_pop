@@ -6,7 +6,7 @@ import "myTextUtils"
 import "mathUtil"
 
 clear   
-gfx.drawImage file.loadImage("assets/background1.png")
+gfx.drawImage file.loadImage("assets/game_background.png")
 
 display(4).mode = displayMode.sprite
 disp = display(4)
@@ -140,11 +140,7 @@ updateTime = function()
 	timeLeft = ceil(endTime - time)
 	text.row = 25
 	text.column = 58
-	if timeLeft<= 0 then
-		// text.color = color.red
-		// print "TIME'S UP!"
-		// text.color = color.silver
-		
+	if timeLeft<= 0 then		
 		load "over"; run
 	else
 		mins = floor(timeLeft/60)
@@ -153,28 +149,44 @@ updateTime = function()
 	end if	
 end function
 
+// is the sight touching a balloon
+checkOverlap = function	
+	for b in balloons
+		//use a joystick		
+		if Sight.overlaps(b) and key.pressed("joystick button 5") then
+			b.pop
+			wait 0.02 // See the burst image
+			b.remove
+			score.value += 1	
+			score.print	
+		end if
+		// use the keyboard
+		if Sight.overlaps(b) and key.pressed("space") then
+			//showHit
+			b.pop
+			wait 0.02 // See the burst image
+			b.remove
+			score.value += 1	
+			score.print	
+		end if
+		// use a mouse
+		if Sight.overlaps(b) and mouse.button then
+			//showHit
+			b.pop
+			wait 0.02 // See the burst image
+			b.remove
+			score.value += 1	
+			score.print	
+		end if
+	end for
+end function
+
 showHit = function
 	b.pop
 	wait 0.02 // See the burst image
 	b.remove
 	score.value += 1	
 	score.print	
-end function
-
-// is the sight touching a balloon
-checkOverlap = function	
-	for b in balloons
-		//use a joystick		
-		if Sight.overlaps(b) and key.pressed("joystick button 5") then
-			showHit
-			// use the keyboard
-		else if Sight.overlaps(b) and key.pressed("space") then
-			showHit
-			// use a mouse
-		else if Sight.overlaps(b) and mouse.button then
-			showHit
-		end if
-	end for
 end function
 
 balloons = [] // a list to hold many balloons
@@ -204,8 +216,7 @@ while not key.pressed("escape")
 	mouseDown = mouse.button
 	if mouseDown and not hadMouseDown then 		
 		checkOverlap		
-	end if
-	
+	end if	
 	hadMouseDown = mouseDown
 	
 	if gamepadSelected then
@@ -220,8 +231,7 @@ while not key.pressed("escape")
 	
 	updateTime
 	
-	yield  // (wait till next frame)  
-	
+	yield  // (wait till next frame)  	
 end while
 
 clear
