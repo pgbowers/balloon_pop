@@ -1,4 +1,4 @@
-// Nov 11, 2025 - Balloon popping game by Peter
+// Nov 2025 to Jan 2026 - Balloon popping game by Peter
 // pop balloons all day long, press Esc to quit.
 // mostly borrowed from the demos and modified .
 
@@ -27,13 +27,12 @@ Sight.localBounds.height = Sight.image.height
 Sight.x = 480 // start in the center
 Sight.y = 320
 Sight.speed = 10 // pixels to move per frame
-//Sight.tint = color.white
 disp.sprites.push Sight
 
 Sight.update = function()
 	// key.axis works for the gamepad, keyboard arrows and WASD.
-	dx = key.axis("Horizontal") //or "Mouse X"
-	dy = key.axis("Vertical") //or "Mouse Y"
+	dx = key.axis("Horizontal") 
+	dy = key.axis("Vertical") 
 	dlen = sqrt(dx*dx + dy*dy) // normalize diagonal movement
 	if dlen > 1 then
 		dx = dx / dlen
@@ -43,7 +42,12 @@ Sight.update = function()
 	Sight.x += dx * Sight.speed
 	Sight.y += dy * Sight.speed	
 	
-	// stay on the screen in all directions
+	stayOnScreen
+	
+end function
+
+// stay on the screen in all directions
+stayOnScreen = function
 	if Sight.x > 940 then //right
 		Sight.x = 940; dx = 0
 	else if Sight.x < 20 then //left
@@ -59,8 +63,7 @@ end function
 // Balloon class
 //==================================================
 Balloon = new Sprite
-Balloon.image = file.loadImage("/sys/pics/Balloon.png")
-//Balloon.image = file.loadImage("assets/3.png")
+Balloon.image = file.loadImage("assets/balloon48.png")
 Balloon.localBounds = new Bounds
 Balloon.localBounds.width = Balloon.image.width
 Balloon.localBounds.height = Balloon.image.height
@@ -91,7 +94,7 @@ Balloon.init = function
 		self.speed = 1
 		self.scale = 2		
 	else
-		self.tint =  "#FF0000C0"//color.red
+		self.tint =  color.red
 		self.scale = 0.9
 		self.speed = 0.9
 	end if
@@ -135,7 +138,7 @@ end function
 score.print // print the empty score to start
 
 // game timer
-endTime = time + 15
+endTime = time + 60
 updateTime = function()
 	timeLeft = ceil(endTime - time)
 	text.row = 25
@@ -161,8 +164,7 @@ checkOverlap = function
 			score.print	
 		end if
 		// use the keyboard
-		if Sight.overlaps(b) and key.pressed("space") then
-			//showHit
+		if Sight.overlaps(b) and key.pressed("space") then			
 			b.pop
 			wait 0.02 // See the burst image
 			b.remove
@@ -170,8 +172,7 @@ checkOverlap = function
 			score.print	
 		end if
 		// use a mouse
-		if Sight.overlaps(b) and mouse.button then
-			//showHit
+		if Sight.overlaps(b) and mouse.button then			
 			b.pop
 			wait 0.02 // See the burst image
 			b.remove
@@ -179,14 +180,6 @@ checkOverlap = function
 			score.print	
 		end if
 	end for
-end function
-
-showHit = function
-	b.pop
-	wait 0.02 // See the burst image
-	b.remove
-	score.value += 1	
-	score.print	
 end function
 
 balloons = [] // a list to hold many balloons
@@ -209,7 +202,8 @@ while not key.pressed("escape")
 	
 	// move the crosshairs with the mouse
 	if mouseSelected then
-		mathUtil.moveTowardsXY Sight, mouse, 20		
+		mathUtil.moveTowardsXY Sight, mouse, 20	
+		stayOnScreen	
 	end if	
 	
 	// handle mouse clicks
@@ -219,6 +213,7 @@ while not key.pressed("escape")
 	end if	
 	hadMouseDown = mouseDown
 	
+	// move with the keyboard or gamepad
 	if gamepadSelected then
 		Sight.update
 		checkOverlap
